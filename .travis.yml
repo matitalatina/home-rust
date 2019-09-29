@@ -5,6 +5,7 @@ services:
   - docker
 env:
   - BUILD_PATH="target/release/home_rust"
+  - BUILD_PATH_RASPBERRY="target/armv7-unknown-linux-gnueabihf/release/home_rust"
 
 cache: cargo
 
@@ -18,7 +19,7 @@ before_deploy:
   - cargo build --release
   - mv $BUILD_PATH ${BUILD_PATH}-linux
   - cross build --release --target armv7-unknown-linux-gnueabihf
-  - mv $BUILD_PATH ${BUILD_PATH}-raspberry
+  - mv $BUILD_PATH_RASPBERRY ${BUILD_PATH}-raspberry
 
 deploy:
   provider: releases
