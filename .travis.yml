@@ -3,6 +3,8 @@ rust:
   - nightly
 services:
   - docker
+env:
+  - BUILD_PATH="target/release/home-rust"
 
 cache: cargo
 
@@ -14,14 +16,16 @@ script:
 
 before_deploy:
   - cargo build --release
+  - mv $BUILD_PATH ${BUILD_PATH}-linux
   - cross build --release --target armv7-unknown-linux-gnueabihf
+  - mv $BUILD_PATH ${BUILD_PATH}-raspberry
 
 deploy:
   provider: releases
   api_key:
     secure: ovB/e1M94V3wqLPbQ6aHYy0yK+YyI4oKkCRabIdr39kVT4QSz31jyPK4V69oJ2ZJHVCb5ExtvgGvOYaFgQQrQOaP0+iBRB8pDIAqVt36smTnly8LcwbMOZor5AfCtSZkl/YkprEuOV3zjwnk9mmhM7ats2ooqLr32ww2FOzVuwe4G87KPJ/s9rdT6qWQ71S7gM6JT/ak8uH/Ih+BDCODzYcC3i8znHEXkZfdgMawRRlazcQX5THetSQKfP+bcslpEhSNAL+MPMecIiuo7j5ffsnBnRdFVLOoxhR9KyC7EIBwc92Jq3OZH+1UXuz4ePBeJP/5uBVCaz1nAxrgfBOn55x5jKt77ndxuQ/m5LRXQrmohcFNP7e8phcCFL/wpXF7shxN1uVuGqot7TUQqEVKxda1jS1n9M5Z8poilcDzzEV8jMGif51Fl2sj87no9mUNOkoG51DqjdD7ox2uY+ounXpTFexVM3L+2CqANpaiMCqiS+kKL0DlcCD07maAZwnreolK1WNn2vdZ5/SxKlhkr5zR/rQqN1x1AJh4m6vJmY6x4/EgV+bkrN90pQPep/4Nxyr+YZicFW2hzPjUlz83kAmad2HFqQykYPILgKaLTkJ+pn5yAA580RayulN2hWOFuTLR2Wb9NNei2s9UcWnklbw+a87M0deNyDDoL7xFnN4=
   file_glob: true
-  file: target/release/home-rust*
+  file: ${BUILD_PATH}*
   on:
     repo: matitalatina/home-rust
     tags: true
