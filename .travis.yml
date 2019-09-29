@@ -4,8 +4,9 @@ rust:
 services:
   - docker
 env:
-  - BUILD_PATH="target/release/home_rust"
-  - BUILD_PATH_RASPBERRY="target/armv7-unknown-linux-gnueabihf/release/home_rust"
+  global:
+    - BUILD_PATH="target/release/home_rust"
+    - BUILD_PATH_RASPBERRY="target/armv7-unknown-linux-gnueabihf/release/home_rust"
 
 cache: cargo
 
