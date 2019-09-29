@@ -1,5 +1,5 @@
-use super::conditioner;
 use super::catchers;
+use super::conditioner;
 
 #[get("/")]
 fn index() -> &'static str {
@@ -9,6 +9,9 @@ fn index() -> &'static str {
 pub fn start() {
     rocket::ignite()
         .mount("/", routes![index, conditioner::controller::activate])
-        .register(catchers![catchers::internal_server_error])
+        .register(catchers![
+            catchers::internal_server_error,
+            catchers::not_found_error,
+        ])
         .launch();
 }
