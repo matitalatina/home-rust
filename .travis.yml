@@ -4,7 +4,7 @@ rust:
 services:
   - docker
 env:
-  - BUILD_PATH="target/release/home-rust"
+  - BUILD_PATH="target/release/home_rust"
 
 cache: cargo
 
