@@ -1,3 +1,6 @@
+os:
+  - linux
+  - osx
 language: rust
 rust:
   - nightly
@@ -11,16 +14,16 @@ env:
 cache: cargo
 
 install:
-  - cargo install cross --force
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; cargo install cross --force; fi
 
 script:
   - cargo test
 
 before_deploy:
   - cargo build --release
-  - mv $BUILD_PATH ${BUILD_PATH}-linux
-  - cross build --release --target armv7-unknown-linux-gnueabihf
-  - mv $BUILD_PATH_RASPBERRY ${BUILD_PATH}-raspberry
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; mv $BUILD_PATH ${BUILD_PATH}-linux; fi
+  - if [ "$TRAVIS_OS_NAME" = "osx" ]; mv $BUILD_PATH ${BUILD_PATH}-mac; fi
+  - if [ "$TRAVIS_OS_NAME" = "linux" ]; cross build --release --target armv7-unknown-linux-gnueabihf; mv $BUILD_PATH_RASPBERRY ${BUILD_PATH}-raspberry; fi
 
 deploy:
   provider: releases
